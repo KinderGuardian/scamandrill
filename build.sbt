@@ -1,12 +1,12 @@
-import SonatypeKeys._
+import xerial.sbt.Sonatype.SonatypeKeys._
 
 sonatypeSettings
 
 name := "scamandrill"
 
-organization := "com.github.dzsessona"
+organization := "com.kg"
 
-profileName := "com.github.dzsessona"
+profileName := "com.kg"
 
 description := "Scala client for Mandrill api"
 
@@ -21,7 +21,7 @@ resolvers ++= Seq("spray repo" at "http://repo.spray.io/")
 parallelExecution in Test := true
 
 libraryDependencies ++= {
-  val akkaV = "2.3.4"
+  val akkaV = "2.3.6"
   val sprayV = "1.3.1"
   Seq(
     "io.spray"          %% "spray-can"        % sprayV,
@@ -45,10 +45,10 @@ publishMavenStyle := true
 
 pomIncludeRepository := { _ => false }
 
-pgpPublicRing := file("/Users/dzsessona/Documents/mykeys/diegopgp.asc")
+//pgpPublicRing := file("/Users/dzsessona/Documents/mykeys/diegopgp.asc")
 
 pomExtra := (
-  <url>http://github.com/dzsessona/scamandrill</url>
+  <url>http://github.com/KinderGuardian/scamandrill</url>
     <licenses>
       <license>
         <name>Apache License 2.0</name>
@@ -56,15 +56,15 @@ pomExtra := (
       </license>
     </licenses>
     <scm>
-      <connection>scm:git:github.com/dzsessona/scamandrill.git</connection>
-      <developerConnection>scm:git:git@github.com:dzsessona/scamandrill.git</developerConnection>
-      <url>github.com/dzsessona/scamandrill</url>
+      <connection>scm:git:github.com/KinderGuardian/scamandrill.git</connection>
+      <developerConnection>scm:git:git@github.com:KinderGuardian/scamandrill.git</developerConnection>
+      <url>github.com/KinderGuardian/scamandrill</url>
     </scm>
     <developers>
       <developer>
-        <id>dzsessona</id>
-        <name>Diego Zambelli Sessona</name>
-        <url>https://www.linkedin.com/in/diegozambellisessona</url>
+        <id>mpichette</id>
+        <name>Matt Pichette</name>
+        <url>https://www.linkedin.com/in/matt-pichette</url>
       </developer>
     </developers>
   )
