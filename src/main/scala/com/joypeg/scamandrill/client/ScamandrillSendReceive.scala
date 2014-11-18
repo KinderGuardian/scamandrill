@@ -22,6 +22,7 @@ trait ScamandrillSendReceive extends SimpleLogger {
   implicit lazy val system: ActorSystem = ActorSystem("scamandrill")
   import system.dispatcher
 
+  sys.addShutdownHook(shutdown())
 
   /**
    * Fire a request to Mandrill API and try to parse the response. Because it return a Future[S], the
