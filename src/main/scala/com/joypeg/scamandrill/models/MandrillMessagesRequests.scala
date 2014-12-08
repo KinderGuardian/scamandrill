@@ -26,7 +26,7 @@ case class MSendMessage(key: String = DefaultConfig.defaultKeyFromConfig,
  */
 case class MSendTemplateMessage(key: String = DefaultConfig.defaultKeyFromConfig,
                                 template_name: String,
-                                template_content: List[MVars],
+                                template_content: Seq[MVars],
                                 message: MSendMsg,
                                 async: Boolean = false,
                                 ip_pool: Option[String] = None,
@@ -51,7 +51,7 @@ case class MMetadata(name: String, value: String)
  * @param rcpt - the email address of the recipient that the metadata is associated with
  * @param values - an associated array containing the recipient's unique metadata. If a key exists in both the per-recipient metadata and the global metadata, the per-recipient metadata will be used.
  */
-case class MRecipientMetadata(rcpt: String, values: List[MMetadata])
+case class MRecipientMetadata(rcpt: String, values: Seq[MMetadata])
 
 
 /**
@@ -91,8 +91,8 @@ class MSendMsg( val html: String,
                 val subject: String,
                 val from_email: String,
                 val from_name: String,
-                val to: List[MTo],
-                val headers: Option[List[MHeader]] = None,
+                val to: Seq[MTo],
+                val headers: Option[Seq[MHeader]] = None,
                 val important: Boolean = false,
                 val track_opens: Boolean = false,
                 val track_clicks: Boolean = false,
@@ -107,24 +107,24 @@ class MSendMsg( val html: String,
                 val signing_domain: String,
                 val return_path_domain: String,
                 val merge: Boolean = false,
-                val global_merge_vars: List[MVars] = List.empty,
-                val merge_vars: List[MMergeVars] = List.empty,
-                val tags: List[String] = List.empty,
+                val global_merge_vars: Seq[MVars] = Seq.empty,
+                val merge_vars: Seq[MMergeVars] = Seq.empty,
+                val tags: Seq[String] = Seq.empty,
                 val subaccount: Option[String] = None,
-                val google_analytics_domains: List[String] = List.empty,
+                val google_analytics_domains: Seq[String] = Seq.empty,
                 val google_analytics_campaign: Option[String] = None,
-                val metadata: List[MMetadata] = List.empty,
-                val recipient_metadata: List[MRecipientMetadata] = List.empty,
-                val attachments: List[MAttachmetOrImage] = List.empty,
-                val images: List[MAttachmetOrImage] = List.empty){
+                val metadata: Seq[MMetadata] = Seq.empty,
+                val recipient_metadata: Seq[MRecipientMetadata] = Seq.empty,
+                val attachments: Seq[MAttachmetOrImage] = Seq.empty,
+                val images: Seq[MAttachmetOrImage] = Seq.empty){
   
   def copy( html: String = this.html ,
             text: String = this.text ,
             subject: String = this.subject ,
             from_email: String = this.from_email ,
             from_name: String = this.from_name ,
-            to: List[MTo] = this.to ,
-            headers: Option[List[MHeader]] = this.headers,
+            to: Seq[MTo] = this.to ,
+            headers: Option[Seq[MHeader]] = this.headers,
             important: Boolean = this.important ,
             track_opens: Boolean = this.track_opens ,
             track_clicks: Boolean = this.track_clicks ,
@@ -139,16 +139,16 @@ class MSendMsg( val html: String,
             signing_domain: String = this.signing_domain ,
             return_path_domain: String = this.return_path_domain ,
             merge: Boolean = this.merge ,
-            global_merge_vars: List[MVars] = this.global_merge_vars ,
-            merge_vars: List[MMergeVars] = this.merge_vars ,
-            tags: List[String] = this.tags ,
+            global_merge_vars: Seq[MVars] = this.global_merge_vars ,
+            merge_vars: Seq[MMergeVars] = this.merge_vars ,
+            tags: Seq[String] = this.tags ,
             subaccount: Option[String] = this.subaccount ,
-            google_analytics_domains: List[String] = this.google_analytics_domains ,
+            google_analytics_domains: Seq[String] = this.google_analytics_domains ,
             google_analytics_campaign: Option[String] = this.google_analytics_campaign ,
-            metadata: List[MMetadata] = this.metadata,
-            recipient_metadata: List[MRecipientMetadata] = this.recipient_metadata,
-            attachments: List[MAttachmetOrImage] = this.attachments ,
-            images: List[MAttachmetOrImage] = this.images): MSendMsg = {
+            metadata: Seq[MMetadata] = this.metadata,
+            recipient_metadata: Seq[MRecipientMetadata] = this.recipient_metadata,
+            attachments: Seq[MAttachmetOrImage] = this.attachments ,
+            images: Seq[MAttachmetOrImage] = this.images): MSendMsg = {
 
     new MSendMsg( html,
                   text,
@@ -233,7 +233,7 @@ case class MAttachmetOrImage(`type`: String, name: String, content: String)
  * @param rcpt - the email address of the recipient that the merge variables should apply to
  * @param vars - the recipient's merge variables
  */
-case class MMergeVars(rcpt: String, vars: List[MVars])
+case class MMergeVars(rcpt: String, vars: Seq[MVars])
 
 /**
  * A single merge variable
@@ -265,9 +265,9 @@ case class MSearch(key: String = DefaultConfig.defaultKeyFromConfig,
                    query: String,
                    date_from: String,
                    date_to: String,
-                   tags: List[String] = List.empty,
-                   senders: List[String] = List.empty,
-                   api_keys: List[String] = List.empty,
+                   tags: Seq[String] = Seq.empty,
+                   senders: Seq[String] = Seq.empty,
+                   api_keys: Seq[String] = Seq.empty,
                    limit: Int = 100) extends MandrillRequest
 
 /**
@@ -283,8 +283,8 @@ case class MSearchTimeSeries(key: String = DefaultConfig.defaultKeyFromConfig,
                              query: String,
                              date_from: String,
                              date_to: String,
-                             tags: List[String] = List.empty,
-                             senders: List[String] = List.empty) extends MandrillRequest
+                             tags: Seq[String] = Seq.empty,
+                             senders: Seq[String] = Seq.empty) extends MandrillRequest
 
 /**
  * Message information
@@ -316,7 +316,7 @@ case class MSendRaw(key: String = DefaultConfig.defaultKeyFromConfig,
                     raw_message: String,
                     from_email: Option[String] = None,
                     from_name: Option[String] = None,
-                    to: List[String] = List.empty,
+                    to: Seq[String] = Seq.empty,
                     async: Boolean = false,
                     ip_pool: Option[String] = None,
                     send_at: Option[String] = None,

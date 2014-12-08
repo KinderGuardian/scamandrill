@@ -30,15 +30,15 @@ object MandrillJsonProtocol extends DefaultJsonProtocol {
   }
   implicit val MMRecipientMetadataJ   = jsonFormat2(MRecipientMetadata)
   implicit object MSendMsgJsonFormat extends RootJsonFormat[MSendMsg]{
-    def write(msg: MSendMsg) = JsObject(
+    def write(msg: MSendMsg) = JsObject(Map[String, JsValue](
         "html" -> JsString(msg.html),
         "text" -> JsString(msg.text),
         "subject" -> JsString(msg.subject),
         "from_email" -> JsString(msg.from_email),
         "from_name" -> JsString(msg.from_name),
-        "to" -> JsArray(msg.to.map(_.toJson)),
+        "to" -> JsArray(msg.to.map(_.toJson).toVector),
         "header" -> (msg.headers match {
-          case Some(value) => JsArray(value.map(_.toJson))
+          case Some(value) => JsArray(value.map(_.toJson).toVector)
           case _ => JsNull
         }),
         "important" -> JsBoolean(msg.important),
@@ -55,23 +55,23 @@ object MandrillJsonProtocol extends DefaultJsonProtocol {
         "signing_domain" -> JsString(msg.signing_domain),
         "return_path_domain" -> JsString(msg.return_path_domain),
         "merge" -> JsBoolean(msg.merge),
-        "global_merge_vars" -> JsArray(msg.global_merge_vars.map(_.toJson)),
-        "merge_vars" -> JsArray(msg.merge_vars.map(_.toJson)),
-        "tags" -> JsArray(msg.tags.map(JsString(_))),
+        "global_merge_vars" -> JsArray(msg.global_merge_vars.map(_.toJson).toVector),
+        "merge_vars" -> JsArray(msg.merge_vars.map(_.toJson).toVector),
+        "tags" -> JsArray(msg.tags.map(JsString(_)).toVector),
         "subaccount" -> (msg.subaccount match {
           case Some(value) => JsString(value)
           case _ => JsNull
         }),
-        "google_analytics_domains" -> JsArray(msg.google_analytics_domains.map(JsString(_))),
+        "google_analytics_domains" -> JsArray(msg.google_analytics_domains.map(JsString(_)).toVector),
         "google_analytics_campaign" -> (msg.google_analytics_campaign match {
           case Some(value) => JsString(value)
           case _ => JsNull
         }),
-        "metadata" -> JsArray(msg.metadata.map(_.toJson)),
-        "recipient_metadata" -> JsArray(msg.recipient_metadata.map(_.toJson)),
-        "attachments" -> JsArray(msg.attachments.map(_.toJson)),
-        "images" -> JsArray(msg.images.map(_.toJson))
-      )
+        "metadata" -> JsArray(msg.metadata.map(_.toJson).toVector),
+        "recipient_metadata" -> JsArray(msg.recipient_metadata.map(_.toJson).toVector),
+        "attachments" -> JsArray(msg.attachments.map(_.toJson).toVector),
+        "images" -> JsArray(msg.images.map(_.toJson).toVector)
+    ))
 
     def read(value: JsValue) = value.asJsObject.getFields("html",
       "text", "subject", "from_email", "from_name","to", "headers", "important", "track_opens", "track_clicks", "auto_text",
@@ -82,17 +82,17 @@ object MandrillJsonProtocol extends DefaultJsonProtocol {
         a.toList
         val message = new MSendMsg(
           a(0).convertTo[String],a(1).convertTo[String],a(2).convertTo[String],a(3).convertTo[String],a(4).convertTo[String],
-          a(5).convertTo[List[MTo]],
-          a(6).convertTo[Option[List[MHeader]]],
+          a(5).convertTo[Seq[MTo]],
+          a(6).convertTo[Option[Seq[MHeader]]],
           a(7).convertTo[Boolean],a(8).convertTo[Boolean],a(9).convertTo[Boolean],a(10).convertTo[Boolean],
           a(11).convertTo[Boolean],a(12).convertTo[Boolean],a(13).convertTo[Boolean],a(14).convertTo[Boolean],
           a(15).convertTo[Boolean],
           a(16).convertTo[String],a(17).convertTo[String],a(18).convertTo[String],a(19).convertTo[String],a(20).convertTo[Boolean],
-          a(21).convertTo[List[MVars]],a(22).convertTo[List[MMergeVars]],a(23).convertTo[List[String]],
-          a(24).convertTo[Option[String]],a(25).convertTo[List[String]],a(26).convertTo[Option[String]],
+          a(21).convertTo[Seq[MVars]],a(22).convertTo[List[MMergeVars]],a(23).convertTo[Seq[String]],
+          a(24).convertTo[Option[String]],a(25).convertTo[Seq[String]],a(26).convertTo[Option[String]],
           List.empty,
           List.empty,
-          a(27).convertTo[List[MAttachmetOrImage]],a(28).convertTo[List[MAttachmetOrImage]]
+          a(27).convertTo[Seq[MAttachmetOrImage]],a(28).convertTo[Seq[MAttachmetOrImage]]
         )
         message
       }.recover{ case e: Exception => deserializationError("MSendMessage expected")}.get
